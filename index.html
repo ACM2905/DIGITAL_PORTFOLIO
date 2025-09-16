@@ -5,115 +5,148 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio - Chandra Mohan A</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
 
   <style>
-    * {margin:0; padding:0; box-sizing:border-box;}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: "Poppins", sans-serif;
-      background:#f4f6f9;
-      color:#111;
-      line-height:1.6;
+      background: #f4f6f9;
+      color: #222;
+      line-height: 1.6;
     }
 
-    /* Header */
     header {
-      background: linear-gradient(135deg, #2563eb, #1e40af);
-      color:#fff;
-      text-align:center;
-      padding:4rem 1rem 6rem;
-      position:relative;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff;
+      text-align: center;
+      padding: 4rem 2rem 6rem;
+      position: relative;
     }
-    header h1 {font-size:2.5rem; margin-bottom:.5rem;}
-    header p {font-size:1.1rem; opacity:0.9;}
+
     .profile-picture {
-      width:140px; height:140px;
-      border-radius:50%;
-      border:4px solid #fff;
-      object-fit:cover;
-      position:absolute; bottom:-70px; left:50%;
-      transform:translateX(-50%);
-      box-shadow:0 6px 18px rgba(0,0,0,0.2);
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      object-fit: cover;
+      position: absolute;
+      bottom: -65px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
 
-    /* Navbar */
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
     nav {
-      background:#fff;
-      box-shadow:0 2px 8px rgba(0,0,0,0.08);
-      position:sticky; top:0; z-index:100;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
+
     nav ul {
-      display:flex; justify-content:center;
-      list-style:none;
-      padding:1rem;
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 1rem;
     }
-    nav ul li {margin:0 15px;}
+
+    nav ul li {
+      margin: 0 15px;
+    }
+
     nav ul li a {
-      text-decoration:none;
-      color:#2563eb;
-      font-weight:600;
-      transition:.3s;
+      text-decoration: none;
+      font-weight: 600;
+      color: #2563eb;
+      transition: 0.3s;
     }
-    nav ul li a:hover {color:#1e40af;}
 
-    /* Sections */
-    section {padding:4rem 1rem; max-width:900px; margin:auto;}
-    .card {
-      background:#fff; padding:2rem;
-      border-radius:16px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
-      margin-bottom:2rem;
+    nav ul li a:hover {
+      color: #1e40af;
     }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .section-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
     h2 {
-      margin-bottom:1.5rem;
-      color:#2563eb;
-      font-size:1.6rem;
-      border-left:5px solid #2563eb;
-      padding-left:10px;
+      margin-bottom: 1.5rem;
+      color: #2563eb;
+      font-size: 1.8rem;
+      border-left: 5px solid #2563eb;
+      padding-left: 10px;
     }
-    ul {padding-left:20px;}
-    li {margin:8px 0;}
 
-    /* Buttons */
-    .btn {
-      display:inline-block;
-      background:#2563eb;
-      color:#fff;
-      padding:.7rem 1.4rem;
-      border-radius:30px;
-      font-weight:600;
-      text-decoration:none;
-      transition:.3s;
+    ul {
+      list-style: disc inside;
     }
-    .btn:hover {background:#1e40af;}
 
-    /* Footer */
+    li {
+      margin: 8px 0;
+    }
+
+    .download-button {
+      display: inline-block;
+      background: #2563eb;
+      color: #fff;
+      padding: 0.7rem 1.4rem;
+      border-radius: 30px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .download-button:hover {
+      background: #1e40af;
+    }
+
     footer {
-      background:#111827;
-      color:#9ca3af;
-      text-align:center;
-      padding:1.5rem;
-      margin-top:2rem;
-    }
-
-    /* Responsive */
-    @media (max-width:768px){
-      header h1{font-size:1.8rem;}
-      nav ul{flex-wrap:wrap;}
+      background: #111827;
+      color: #9ca3af;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 3rem;
     }
   </style>
 </head>
+
 <body>
-
-  <!-- Header -->
   <header>
-    <img src="IMAGE.JPG" alt="Profile Picture" class="profile-picture">
     <h1>CHANDRA MOHAN A</h1>
-    <p>Computer Science Student | Web Developer | AI Enthusiast</p>
+    <p>Computer Science Student</p>
+    <img src="IMAGE.JPG" alt="Profile Picture" class="profile-picture" />
   </header>
-
-  <!-- Navbar -->
+  <br>
+  <br>
+  
   <nav>
     <ul>
       <li><a href="#about">About</a></li>
@@ -121,84 +154,69 @@
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#resume">Resume</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
-  <!-- About -->
   <section id="about">
-    <div class="card">
+    <div class="section-content">
       <h2>About Me</h2>
-      <p>I'm a <b>Computer Science student at Bharathidasan University</b>, passionate about Web Development, Artificial Intelligence, and Machine Learning. I love solving problems and building creative projects.</p>
+      <p>
+      I am Chandra Mohan, a Computer Science student. I know the basics of computer languages like Java, Python, and C, and I have skills in front-end development with HTML, CSS, and JavaScript. I have also handled AI projects at a basic level and I am eager to learn more in this field. I am a quick learner, interested in modern technologies, and able to handle tasks with responsibility and dedication.
+
+<b>I come from a family of four members —my father, mother, brother, and me. With their support, I aim to build a successful career in the computer science field, focusing on software development and modern technologies.</b></p>
     </div>
   </section>
 
-  <!-- Education -->
   <section id="education">
-    <div class="card">
+    <div class="section-content">
       <h2>Education</h2>
-      <p><b>B.Sc. Computer Science</b> — Bharathidasan University (2023 - 2026)</p>
+      <p>B.Sc. Computer Science
+Arts and Science College, Aranthang
+Passing Year: 2026
+Higher Secondary Education (6th–12th)
+Government Higher Secondary School, 
+Kottaipattinam</p>
     </div>
   </section>
 
-  <!-- Skills -->
   <section id="skills">
-    <div class="card">
+    <div class="section-content">
       <h2>Skills</h2>
       <ul>
-        <li>Python</li>
-        <li>MySQL</li>
-        <li>HTML & CSS</li>
-        <li>Java</li>
-        <li>C</li>
-        <li>JavaScript</li>
-        <li>Quick Learner</li>
+        <li>Programming & Development: 
+Front-End (HTML, CSS, JavaScript)</li>
+        <li>Tools & Technologies:
+Git, GitHub, Cloud Computing Basics</li>
+        <li>Software Skills:
+MS Office, Excel, Tally, Internet Research</li>
+        <li>Creative Skills: 
+Problem Solving, Creative Thinking</li>
+        <li>Additional Skills: 
+Carpentry & Woodwork</li>
+        <li>I knew the basics of Java, Python, and C, and then I learned everything all over again</li>
       </ul>
     </div>
   </section>
 
-  <!-- Projects -->
   <section id="projects">
-    <div class="card">
+    <div class="section-content">
       <h2>Projects</h2>
       <ul>
         <li><a href="https://acm2905.github.io/DIGITAL_PORTFOLIO/" target="_blank">Digital Portfolio (HTML, CSS)</a></li>
-        <li><a href="https://acm2905.github.io/Kaleesh/" target="_blank">Kaleesh — Multiple Projects</a></li>
+        <li><a href="https://acm2905.github.io/Kaleesh/" target="_blank">Many Projects Including</a></li>
       </ul>
     </div>
   </section>
 
-  <!-- Resume -->
   <section id="resume">
-    <div class="card" style="text-align:center;">
+    <div class="section-content" style="text-align: center;">
       <h2>Resume</h2>
-      <a href="RESUME.pdf" target="_blank" class="btn">Download CV</a>
+      <a href="RESUME.pdf" target="_blank" class="download-button">Download CV</a>
     </div>
   </section>
 
-  <!-- Contact -->
-  <section id="contact">
-    <div class="card">
-      <h2>Contact</h2>
-      <p><b>Email:</b> your.email@example.com</p>
-      <p><b>Location:</b> India</p>
-      <p><b>GitHub:</b> <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></p>
-    </div>
-  </section>
-
-  <!-- Footer -->
   <footer>
     <p>&copy; 2025 CHANDRA MOHAN A | All Rights Reserved</p>
   </footer>
-
-  <script>
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
-      anchor.addEventListener("click",function(e){
-        e.preventDefault();
-        document.querySelector(this.getAttribute("href")).scrollIntoView({behavior:"smooth"});
-      });
-    });
-  </script>
 </body>
-</html>
+    </html>
