@@ -1,224 +1,751 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio - Chandra Mohan A</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Chandra Mohan — Futuristic Portfolio</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+<!-- Fonts & libs -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
+<style>
+  :root{
+    --bg:#06070a; --card:#0f1724; --muted:#98a0ab; --neon1:#06b6d4; --neon2:#7c3aed;
+    --glass: rgba(255,255,255,0.04); --accent:linear-gradient(90deg,var(--neon2),var(--neon1));
+    --radius:14px; --container:1100px; --sans:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:var(--sans); background:radial-gradient(1200px 600px at 10% 10%, rgba(12,18,30,0.6), var(--bg));
+    color:#e6eef6; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+  a{color:inherit}
+  .container{max-width:var(--container); margin:0 auto; padding:2rem;}
 
-    body {
-      font-family: "Poppins", sans-serif;
-      background: #f4f6f9;
-      color: #222;
-      line-height: 1.6;
-    }
+  /* NAV */
+  nav.app-nav{
+    position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:1400;
+    width:calc(100% - 48px); max-width:1200px; display:flex; justify-content:space-between; align-items:center;
+    padding:8px 16px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+    border-radius:12px; border:1px solid rgba(255,255,255,0.04); backdrop-filter: blur(8px);
+  }
+  .brand{font-weight:800; letter-spacing:0.2px; color:var(--neon1)}
+  .nav-links{display:flex; gap:12px; align-items:center}
+  .nav-links a{padding:8px 12px; border-radius:10px; color:var(--muted); font-weight:600; text-decoration:none}
+  .nav-links a.active, .nav-links a:hover{color:#fff; box-shadow:0 6px 20px rgba(6,182,212,0.06); background:rgba(255,255,255,0.02)}
 
-    header {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: #fff;
-      text-align: center;
-      padding: 4rem 2rem 6rem;
-      position: relative;
-    }
+  /* THEME TOGGLE */
+  .controls{display:flex; gap:10px; align-items:center}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; cursor:pointer; border:0; font-weight:700}
+  .btn.primary{background:var(--accent); color:#041826; box-shadow:0 8px 30px rgba(12,18,30,0.6)}
+  .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted)}
 
-    .profile-picture {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 4px solid #fff;
-      object-fit: cover;
-      position: absolute;
-      bottom: -65px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-    }
+  /* HERO */
+  header.hero{
+    min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    padding:6rem 0 4rem;
+  }
+  .hero-inner{display:grid; grid-template-columns: 420px 1fr; gap:40px; align-items:center; max-width:1200px; width:100%}
+  .card-profile{
+    --size:360px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:18px; padding:20px; display:flex; gap:18px; align-items:center; box-shadow:0 30px 80px rgba(2,6,23,0.6);
+    transform-style:preserve-3d; perspective:1000px;
+  }
+  .avatar{
+    width:var(--size); height:var(--size); border-radius:50%; overflow:hidden; flex-shrink:0;
+    border:8px solid rgba(255,255,255,0.06); box-shadow:0 16px 60px rgba(2,6,23,0.6);
+    background:linear-gradient(180deg,#0f1724,#071428);
+  }
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .profile-meta{flex:1}
+  .profile-meta h1{font-size:2.4rem; margin:0 0 6px}
+  .profile-meta p.lead{color:var(--muted); margin:0 0 12px; font-weight:600}
 
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.3rem;
-    }
+  /* 3D floating object holder */
+  .float-3d{height:160px; width:160px; border-radius:20px; background:linear-gradient(135deg, rgba(124,58,237,0.14), rgba(6,182,212,0.12)); display:flex; align-items:center; justify-content:center; transform-style:preserve-3d}
+  .float-3d .cube{width:80px; height:80px; transform-style:preserve-3d; transition:transform 0.12s ease-out}
+  .cube div{position:absolute; width:80px; height:80px; background:linear-gradient(135deg, rgba(124,58,237,0.85), rgba(6,182,212,0.6)); opacity:0.95; border-radius:8px}
 
-    header p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
+  /* Intro text */
+  .intro { padding:6px 0 0; }
+  .intro h2{font-size:1.6rem; margin:0; color:#fff}
+  .intro .type{color:var(--neon1); font-weight:800; margin-left:6px}
+  .intro p{margin-top:10px; color:var(--muted); max-width:52ch}
 
-    nav {
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+  /* Floating CTA */
+  .float-cta{position:fixed; bottom:28px; right:28px; z-index:1500; border-radius:40px; padding:12px 18px; font-weight:800; box-shadow:0 14px 40px rgba(6,182,212,0.08); transform:translateZ(0)}
+  .float-cta:hover{transform:translateY(-6px) scale(1.03)}
 
-    nav ul {
-      display: flex;
-      justify-content: center;
-      list-style: none;
-      padding: 1rem;
-    }
+  /* SECTIONS */
+  section{padding:80px 0}
+  .two-col{display:grid; grid-template-columns:1fr 420px; gap:36px; align-items:start}
+  .card {background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:20px; border-radius:14px; border:1px solid rgba(255,255,255,0.03)}
+  .section-title{display:flex; align-items:center; gap:12px; margin-bottom:18px}
+  .section-title h2{margin:0; font-size:1.4rem; color:var(--neon2)}
 
-    nav ul li {
-      margin: 0 15px;
-    }
+  /* Strengths list */
+  .list-strong li{margin-bottom:12px; color:var(--muted); font-weight:600}
 
-    nav ul li a {
-      text-decoration: none;
-      font-weight: 600;
-      color: #2563eb;
-      transition: 0.3s;
-    }
+  /* Timeline */
+  .timeline {position:relative; padding-left:20px}
+  .timeline::before{content:""; position:absolute; left:6px; top:0; bottom:0; width:3px; background:linear-gradient(180deg, var(--neon2), var(--neon1)); border-radius:2px}
+  .timeline-item{position:relative; margin-bottom:20px; padding-left:20px}
+  .timeline-item h4{margin:0 0 6px}
 
-    nav ul li a:hover {
-      color: #1e40af;
-    }
+  /* Skills */
+  .skills-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px}
+  .skill-pill{background:rgba(255,255,255,0.02); padding:12px; border-radius:10px; display:flex; flex-direction:column; gap:8px; align-items:flex-start}
+  .radial{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--neon1) 0% 0%, rgba(255,255,255,0.03) 0);position:relative}
+  .radial .num{position:absolute;font-weight:800}
 
-    section {
-      padding: 4rem 2rem;
-      max-width: 900px;
-      margin: auto;
-    }
+  /* projects grid */
+  .projects-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px}
+  .project{position:relative; overflow:hidden; border-radius:12px; cursor:pointer; transform-style:preserve-3d}
+  .project .thumb{height:160px; background:#0b1220; display:flex; align-items:center; justify-content:center}
+  .project .meta{padding:14px; background:linear-gradient(180deg, rgba(0,0,0,0.25), transparent)}
 
-    .section-content {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+  .project:hover .meta{transform:translateY(-6px)}
 
-    h2 {
-      margin-bottom: 1.5rem;
-      color: #2563eb;
-      font-size: 1.8rem;
-      border-left: 5px solid #2563eb;
-      padding-left: 10px;
-    }
+  /* modal */
+  .modal {position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:2000}
+  .modal.show{display:flex}
+  .modal .panel{width:min(1000px,94%); max-height:90vh; overflow:auto; background:linear-gradient(180deg,#061426,#071428); padding:20px; border-radius:14px; border:1px solid rgba(255,255,255,0.04)}
+  .modal .close{position:absolute; right:22px; top:18px; background:transparent; border:0; color:var(--muted); font-size:18px}
 
-    ul {
-      list-style: disc inside;
-    }
+  /* testimonials */
+  .testi{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .testi blockquote{margin:0; padding:14px; background:rgba(255,255,255,0.02); border-radius:10px; color:var(--muted)}
 
-    li {
-      margin: 8px 0;
-    }
+  /* footer */
+  footer{padding:28px 0; text-align:center; color:var(--muted); font-weight:600}
+  /* responsive */
+  @media (max-width:980px){
+    .hero-inner{grid-template-columns:1fr; gap:20px; padding:0 12px}
+    .two-col{grid-template-columns:1fr}
+    .nav-links{display:none}
+  }
 
-    .download-button {
-      display: inline-block;
-      background: #2563eb;
-      color: #fff;
-      padding: 0.7rem 1.4rem;
-      border-radius: 30px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-
-    .download-button:hover {
-      background: #1e40af;
-    }
-
-    footer {
-      background: #111827;
-      color: #9ca3af;
-      text-align: center;
-      padding: 1.5rem;
-      margin-top: 3rem;
-    }
-  </style>
+  /* neon / light mode via html[data-theme="light"] */
+  html[data-theme="light"]{--bg:#f7fbff; --card:#fff; --muted:#475569; color:#071428}
+  html[data-theme="light"] body{background:linear-gradient(180deg,#f8fbff,#eef6ff)}
+  html[data-theme="light"] .card{background:#fff; border:1px solid rgba(2,6,23,0.03); color:#071428}
+</style>
 </head>
-
 <body>
-  <header>
-    <h1>CHANDRA MOHAN A</h1>
-    <p>Computer Science Student</p>
-    <img src="IMAGE.JPG" alt="Profile Picture" class="profile-picture" />
-  </header>
-  <br>
-  <br>
-  
-  <nav>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#resume">Resume</a></li>
-    </ul>
-  </nav>
 
-  <section id="about">
-    <div class="section-content">
-      <h2>About Me</h2>
-      <p>
-      I am Chandra Mohan, a Computer Science student. I know the basics of computer languages like Java, Python, and C, and I have skills in front-end development with HTML, CSS, and JavaScript. I have also handled AI projects at a basic level and I am eager to learn more in this field. I am a quick learner, interested in modern technologies, and able to handle tasks with responsibility and dedication.
+<!-- NAV -->
+<nav class="app-nav" role="navigation" aria-label="Main">
+  <div class="brand">Chandra<span style="color:var(--neon2)"> Mohan</span></div>
+  <div class="nav-links" role="menubar" aria-label="Primary">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
 
-<b>I come from a family of four members —my father, mother, brother, and me. With their support, I aim to build a successful career in the computer science field, focusing on software development and modern technologies.</b></p>
+  <div class="controls" role="group" aria-label="Controls">
+    <button id="themeBtn" class="btn ghost" aria-pressed="false" title="Toggle theme">🌗</button>
+    <a id="resumeBtn" href="https://acm2905.github.io/DIGITAL_PORTFOLIO" target="_blank" class="btn primary" title="View portfolio">Portfolio</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="home" class="hero" aria-label="Introduction">
+  <div class="container hero-inner" aria-hidden="false">
+    <div class="card-profile card" id="profileCard" tabindex="0">
+      <div class="avatar" aria-hidden="true">
+        <!-- Use real photo: replace src with your image file -->
+        <img src="IMAGE.png" alt="Chandra Mohan — profile photo" id="profileImg" loading="lazy">
+      </div>
+
+      <div class="profile-meta">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="float-3d" aria-hidden="true">
+            <div class="cube" id="cube">
+              <div style="transform:rotateY(0deg) translateZ(40px)"></div>
+              <div style="transform:rotateY(180deg) translateZ(40px)"></div>
+              <div style="transform:rotateX(90deg) translateZ(40px)"></div>
+              <div style="transform:rotateX(-90deg) translateZ(40px)"></div>
+            </div>
+          </div>
+          <div class="intro">
+            <h1>Chandra Mohan</h1>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <h2 style="margin:0">Student</h2>
+              <div style="color:var(--muted); font-weight:700;">•</div>
+              <div class="type" id="typewriter" aria-live="polite">Front-End Developer</div>
+            </div>
+            <p class="lead">To utilize my knowledge in computer science, front-end development, and modern technologies while continuously learning and contributing to innovative projects.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div style="display:flex;gap:12px;align-items:center">
+        <button id="hireBtn" class="btn primary float-cta" aria-label="Hire me">📩 Hire Me</button>
+        <a class="btn ghost" href="#projects">See Projects</a>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
+        <div style="font-weight:700;color:var(--muted)">Contact</div>
+        <div style="color:var(--muted)">📞 8825476228 • ✉️ chandramohanroman@gmail.com</div>
+      </div>
+
+      <div style="margin-top:18px; color:var(--muted); max-width:520px">
+        <strong>Quick snapshot:</strong> HTML • CSS • JavaScript • Git • Cloud basics • MS Office • Problem solving • Carpentry
+      </div>
+    </div>
+  </div>
+
+  <!-- Particle canvas (behind content) -->
+  <canvas id="particles" aria-hidden="true" style="position:absolute;inset:0;z-index:0"></canvas>
+</header>
+
+<main class="container" style="position:relative;z-index:10">
+
+  <!-- ABOUT + STRENGTHS -->
+  <section id="about" class="card" aria-labelledby="aboutTitle">
+    <div class="section-title"><h2 id="aboutTitle">About & Objective</h2></div>
+    <div class="two-col">
+      <div>
+        <p style="color:var(--muted)">To utilize my knowledge in computer science, front-end development, and modern technologies while continuously learning and contributing to innovative projects.</p>
+        <h3 style="margin-top:18px">Strengths</h3>
+        <ul class="list-strong">
+          <li>Quick learner and adaptive to new technologies</li>
+          <li>Strong problem-solving and analytical thinking</li>
+          <li>Ability to manage both technical and practical tasks</li>
+          <li>Interest in both computer field and entrepreneurship</li>
+        </ul>
+      </div>
+
+      <aside class="card" aria-label="Contact card">
+        <h4>Contact</h4>
+        <p><strong>Phone:</strong> <a href="tel:+918825476228">8825476228</a></p>
+        <p><strong>Email:</strong> <a href="mailto:chandramohanroman@gmail.com">chandramohanroman@gmail.com</a></p>
+        <p><strong>Address:</strong> 1142, Ladakara Street, Kottaipattinam, Manamelkudi TK, Pudukkottai DT, 614619</p>
+        <p><a href="https://acm2905.github.io/DIGITAL_PORTFOLIO" target="_blank" rel="noopener">My GitHub Pages Portfolio</a></p>
+      </aside>
     </div>
   </section>
 
-  <section id="education">
-    <div class="section-content">
-      <h2>Education</h2>
-      <p>B.Sc. Computer Science
-Arts and Science College, Aranthang
-Passing Year: 2026
-Higher Secondary Education (6th–12th)
-Government Higher Secondary School, 
-Kottaipattinam</p>
+  <!-- Projects -->
+  <section id="projects" class="card" aria-labelledby="projectsTitle" style="margin-top:24px">
+    <div class="section-title"><h2 id="projectsTitle">Selected Projects (Case studies)</h2></div>
+    <div class="projects-grid" id="projectsGrid" role="list">
+      <!-- Project 1 -->
+      <article class="project card" tabindex="0" role="listitem" data-id="p1">
+        <div class="thumb" aria-hidden="true">
+          <img data-src="https://via.placeholder.com/600x360/0b1220/ffffff?text=Project+Alpha" alt="Project Alpha screenshot" loading="lazy" style="width:100%;height:160px;object-fit:cover">
+        </div>
+        <div class="meta">
+          <h3>Project Alpha — Marketing Site</h3>
+          <p class="muted" style="color:var(--muted)">Fast public-facing marketing site with animations and accessibility focus. Result: improved engagement.</p>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn ghost viewBtn" data-id="p1">View Case</button>
+            <a class="btn primary" href="#" aria-label="Open link">Open</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="project card" tabindex="0" role="listitem" data-id="p2">
+        <div class="thumb" aria-hidden="true">
+          <img data-src="https://via.placeholder.com/600x360/063f3e/ffffff?text=Project+Beta" alt="Project Beta screenshot" loading="lazy" style="width:100%;height:160px;object-fit:cover">
+        </div>
+        <div class="meta">
+          <h3>Project Beta — UX Redesign</h3>
+          <p class="muted" style="color:var(--muted)">UX redesign that increased conversion through iterative testing and micro-animations.</p>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn ghost viewBtn" data-id="p2">View Case</button>
+            <a class="btn primary" href="#" aria-label="Open link">Open</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="project card" tabindex="0" role="listitem" data-id="p3">
+        <div class="thumb" aria-hidden="true">
+          <img data-src="https://via.placeholder.com/600x360/6b21a8/ffffff?text=Project+Gamma" alt="Project Gamma screenshot" loading="lazy" style="width:100%;height:160px;object-fit:cover">
+        </div>
+        <div class="meta">
+          <h3>Project Gamma — Open Source</h3>
+          <p class="muted" style="color:var(--muted)">Open-source component library focusing on accessible primitives and customization.</p>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="btn ghost viewBtn" data-id="p3">View Case</button>
+            <a class="btn primary" href="#" aria-label="Open link">Open</a>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
-  <section id="skills">
-    <div class="section-content">
-      <h2>Skills</h2>
-      <ul>
-        <li>Programming & Development: 
-Front-End (HTML, CSS, JavaScript)</li>
-        <li>Tools & Technologies:
-Git, GitHub, Cloud Computing Basics</li>
-        <li>Software Skills:
-MS Office, Excel, Tally, Internet Research</li>
-        <li>Creative Skills: 
-Problem Solving, Creative Thinking</li>
-        <li>Additional Skills: 
-Carpentry & Woodwork</li>
-        <li>I knew the basics of Java, Python, and C, and then I learned everything all over again</li>
-      </ul>
+  <!-- Skills & Languages -->
+  <section id="skills" class="card" style="margin-top:24px">
+    <div class="section-title"><h2>Skills & Languages</h2></div>
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:18px;align-items:start">
+      <div>
+        <div class="skills-grid" aria-hidden="false">
+          <div class="skill-pill">
+            <div style="display:flex;align-items:center;gap:12px;width:100%">
+              <div class="radial" data-level="90%"><div class="num">90%</div></div>
+              <div><strong>HTML / CSS / JavaScript</strong><div style="color:var(--muted)">Front-end basics & responsive design</div></div>
+            </div>
+          </div>
+          <div class="skill-pill">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="radial" data-level="75%"><div class="num">75%</div></div>
+              <div><strong>Git / GitHub</strong><div style="color:var(--muted)">Version control, PR workflows</div></div>
+            </div>
+          </div>
+          <div class="skill-pill">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="radial" data-level="80%"><div class="num">80%</div></div>
+              <div><strong>MS Office / Excel / Tally</strong><div style="color:var(--muted)">Productivity & data</div></div>
+            </div>
+          </div>
+          <div class="skill-pill">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="radial" data-level="85%"><div class="num">85%</div></div>
+              <div><strong>Problem Solving</strong><div style="color:var(--muted)">Creative & analytical thinking</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside style="display:flex;flex-direction:column;gap:12px">
+        <div class="card">
+          <h4>Languages</h4>
+          <p style="margin:6px 0">Native Tamil — Advanced English</p>
+        </div>
+        <div class="card">
+          <h4>Additional</h4>
+          <p style="margin:6px 0">Carpentry & Woodwork — Practical maker skills</p>
+        </div>
+      </aside>
     </div>
   </section>
 
-  <section id="projects">
-    <div class="section-content">
-      <h2>Projects</h2>
-      <ul>
-        <li><a href="https://acm2905.github.io/DIGITAL_PORTFOLIO/" target="_blank">Digital Portfolio (HTML, CSS)</a></li>
-        <li><a href="https://acm2905.github.io/Kaleesh/" target="_blank">Many Projects Including</a></li>
-        <li><a href="https://acm2905.github.io/mini-js-projects/" target="_blank">mini-js-projects</a></li>
-    
-      </ul>
+  <!-- Testimonials -->
+  <section id="testimonials" class="card" style="margin-top:24px">
+    <div class="section-title"><h2>Testimonials</h2></div>
+    <div class="testi" id="testiWrap">
+      <blockquote>"Excellent collaborator — shipping high quality UI on time." <br><small>— Product Manager, Acme</small></blockquote>
+      <blockquote>"Brought design and implementation together seamlessly." <br><small>— Founder, Startup</small></blockquote>
     </div>
   </section>
 
-  <section id="resume">
-    <div class="section-content" style="text-align: center;">
-      <h2>Resume</h2>
-      <a href="RESUME.jpg" target="_blank" class="download-button">Download CV</a>
+  <!-- Education -->
+  <section id="education" class="card" style="margin-top:24px">
+    <div class="section-title"><h2>Education</h2></div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>B.Sc. Computer Science</h4>
+        <p>Arts and Science College, Aranthang — Passing Year: 2026</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Higher Secondary Education (6th–12th)</h4>
+        <p>Government Higher Secondary School, Kottaipattinam</p>
+      </div>
     </div>
   </section>
 
-  <footer>
-    <p>&copy; 2025 CHANDRA MOHAN A | All Rights Reserved</p>
-  </footer>
+  <!-- Contact -->
+  <section id="contact" class="card" style="margin-top:24px" aria-labelledby="contactTitle">
+    <div class="section-title"><h2 id="contactTitle">Contact</h2></div>
+    <form id="contactForm" class="card" style="display:grid;gap:12px" novalidate>
+      <input name="name" id="cf-name" placeholder="Full name" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" required>
+      <input name="email" id="cf-email" placeholder="Email" type="email" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" required>
+      <select id="cf-need" style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit">
+        <option value="project">I need a website/app</option>
+        <option value="consult">Consultation</option>
+        <option value="freelance">Freelance work</option>
+      </select>
+      <textarea name="message" id="cf-message" rows="5" placeholder="Tell me about your project..." style="padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" required></textarea>
+      <div style="display:flex;gap:12px;align-items:center">
+        <button type="submit" class="btn primary">Send Message</button>
+        <button type="reset" class="btn ghost">Reset</button>
+        <div id="cf-status" style="color:var(--muted); margin-left:8px"></div>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<!-- Modal for project details -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="panel" role="document">
+    <button class="close" id="modalClose" aria-label="Close dialog">✕</button>
+    <div id="modalInner"></div>
+  </div>
+</div>
+
+<footer>
+  © <span id="year"></span> Chandra Mohan — Built with ❤️ and modern JS
+</footer>
+
+<!-- JS (all features) -->
+<script>
+/* -------------------------
+   Utilities & initial setup
+   ------------------------- */
+const yearEl = document.getElementById('year'); yearEl.textContent = new Date().getFullYear();
+
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+/* -------------------------
+   THEME toggle (animated)
+   ------------------------- */
+const themeBtn = $('#themeBtn');
+const doc = document.documentElement;
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'light') {
+  doc.setAttribute('data-theme','light');
+  themeBtn.setAttribute('aria-pressed','true');
+}
+themeBtn.addEventListener('click', () => {
+  const isLight = doc.getAttribute('data-theme') === 'light';
+  if (isLight) {
+    doc.removeAttribute('data-theme');
+    localStorage.removeItem('theme');
+    themeBtn.setAttribute('aria-pressed','false');
+  } else {
+    doc.setAttribute('data-theme','light');
+    localStorage.setItem('theme','light');
+    themeBtn.setAttribute('aria-pressed','true');
+  }
+});
+
+/* -------------------------
+   Typewriter text (hero)
+   ------------------------- */
+const typeEl = document.getElementById('typewriter');
+const phrases = ['Computer Science Student','Front-End Developer','Accessibility Advocate','Open-source Contributor'];
+let pi=0, ci=0;
+(function typeTick(){
+  const current = phrases[pi];
+  typeEl.textContent = current.slice(0, ++ci);
+  if (ci === current.length) { setTimeout(()=>{ ci=0; pi=(pi+1)%phrases.length; typeTick(); }, 1800); return; }
+  setTimeout(typeTick, 80);
+})();
+
+/* -------------------------
+   Particle background (canvas)
+   ------------------------- */
+(function particles(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  const count = Math.max(40, Math.floor(w*h/40000));
+  const particles = [];
+  for(let i=0;i<count;i++){
+    particles.push({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: 0.6+Math.random()*2.4,
+      vx: (Math.random()-0.5)*0.6,
+      vy: (Math.random()-0.5)*0.6,
+      hue: 180 + Math.random()*140
+    });
+  }
+  function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
+  addEventListener('resize', resize);
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(const p of particles){
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -10) p.x = w+10; if (p.x > w+10) p.x = -10;
+      if (p.y < -10) p.y = h+10; if (p.y > h+10) p.y = -10;
+      ctx.beginPath();
+      ctx.fillStyle = `hsla(${p.hue},70%,60%,0.08)`;
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* -------------------------
+   Parallax / hover 3D cube
+   ------------------------- */
+(function cubeParallax(){
+  const holder = document.querySelector('.float-3d');
+  const cube = document.getElementById('cube');
+  let rect = holder.getBoundingClientRect();
+  function onMove(e){
+    const x = (e.clientX - rect.left) - rect.width/2;
+    const y = (e.clientY - rect.top) - rect.height/2;
+    const rx = (y / rect.height) * -12;
+    const ry = (x / rect.width) * 12;
+    cube.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+  }
+  function onEnter(){ rect = holder.getBoundingClientRect(); }
+  holder.addEventListener('mousemove', onMove);
+  holder.addEventListener('mouseenter', onEnter);
+})(); 
+
+/* -------------------------
+   Lazy-load images (data-src)
+   ------------------------- */
+(function lazyLoad(){
+  const imgs = $$('img[data-src]');
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if (e.isIntersecting){
+          const img = e.target;
+          img.src = img.dataset.src;
+          io.unobserve(img);
+        }
+      });
+    }, {rootMargin:'200px'});
+    imgs.forEach(img => io.observe(img));
+  } else { imgs.forEach(i=>i.src = i.dataset.src); }
+})();
+
+/* -------------------------
+   Project modal (case study)
+   ------------------------- */
+const modal = $('#modal');
+const modalInner = $('#modalInner');
+const modalClose = $('#modalClose');
+const viewBtns = $$('.viewBtn');
+
+const projectData = {
+  p1: {
+    title:'Project Alpha — Marketing Site',
+    desc:'Public-facing marketing site with modern animations, strong accessibility, and improved engagement.',
+    bullets:['Performance optimization', 'Accessible animations', 'Responsive design'],
+    media: '<img src="https://via.placeholder.com/900x420/0b1220/ffffff?text=Alpha+Preview" alt="Project Alpha" style="width:100%;height:auto;border-radius:8px">'
+  },
+  p2: {
+    title:'Project Beta — UX Redesign',
+    desc:'UX redesign focused on conversion uplift with A/B tested microcopy and flows.',
+    bullets:['User research', 'Prototype → tests', 'Conversion lift'],
+    media: '<img src="https://via.placeholder.com/900x420/063f3e/ffffff?text=Beta+Preview" alt="Project Beta" style="width:100%;height:auto;border-radius:8px">'
+  },
+  p3: {
+    title:'Project Gamma — Open Source',
+    desc:'Component library emphasizing accessible primitives and easy theming.',
+    bullets:['Component API', 'Storybook', 'Unit tests'],
+    media: '<img src="https://via.placeholder.com/900x420/6b21a8/ffffff?text=Gamma+Preview" alt="Project Gamma" style="width:100%;height:auto;border-radius:8px">'
+  }
+};
+
+function openProject(id){
+  const d = projectData[id] || {title:'Project',desc:'TBD',bullets:[],media:''};
+  modalInner.innerHTML = `
+    <h2 style="margin-top:0">${escapeHtml(d.title)}</h2>
+    <p style="color:var(--muted)">${escapeHtml(d.desc)}</p>
+    <div style="margin:12px 0">${d.media}</div>
+    <ul>${d.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <a class="btn primary" href="#" role="button">Open Live</a>
+      <button class="btn ghost" id="modalCloseBtn">Close</button>
+    </div>
+  `;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+  // focus
+  setTimeout(()=> modal.querySelector('button, a')?.focus(), 80);
+
+  // small tracking event
+  trackEvent('project_open', {project:id, title: d.title});
+}
+viewBtns.forEach(b => b.addEventListener('click', e => openProject(e.currentTarget.dataset.id)));
+document.addEventListener('click', e => {
+  if (e.target.id === 'modal' || e.target.id === 'modalClose' || e.target.id === 'modalCloseBtn') closeModal();
+});
+modalClose.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function closeModal(){
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+  modalInner.innerHTML = '';
+}
+
+/* -------------------------
+   Testimonials slider (simple)
+   ------------------------- */
+(function testiSlider(){
+  const wrap = $('#testiWrap');
+  if (!wrap) return;
+  let idx = 0;
+  const items = Array.from(wrap.children);
+  items.forEach((it,i)=> it.style.display = i===0 ? 'block' : 'none');
+  setInterval(()=>{
+    items[idx].style.opacity = 0; items[idx].style.display = 'none';
+    idx = (idx+1)%items.length;
+    items[idx].style.display = 'block'; items[idx].style.opacity = 1;
+  }, 4200);
+})();
+
+/* -------------------------
+   Skills radial animation on scroll
+   ------------------------- */
+(function skillsAnim(){
+  const radials = Array.from($$('.radial'));
+  function raf(){
+    for(const r of radials){
+      const rect = r.getBoundingClientRect();
+      if(rect.top < innerHeight - 80){
+        const level = r.dataset.level || '75%';
+        // conic-gradient to emulate radial fill
+        r.style.background = `conic-gradient(var(--neon1) 0 ${level}, rgba(255,255,255,0.03) ${level} 100%)`;
+        r.querySelector('.num').textContent = level;
+      }
+    }
+    requestAnimationFrame(raf);
+  }
+  raf();
+})();
+
+/* -------------------------
+   GSAP Scroll reveals
+   ------------------------- */
+gsap.registerPlugin(ScrollTrigger);
+gsap.from('.card-profile', {opacity:0, y:40, duration:1, ease:'power3.out'});
+gsap.from('.project', {opacity:0, y:30, duration:0.9, stagger:0.12, scrollTrigger:{trigger:'#projects', start:'top 80%'}});
+gsap.utils.toArray('section.card').forEach(sec => {
+  gsap.from(sec, {opacity:0, y:40, duration:0.9, scrollTrigger:{trigger:sec, start:'top 85%'}});
+});
+
+/* -------------------------
+   Floating CTA & smooth scroll
+   ------------------------- */
+$('#hireBtn').addEventListener('click', ()=> {
+  document.getElementById('contact').scrollIntoView({behavior:'smooth', block:'start'});
+  trackEvent('cta_click', {label:'hire'});
+});
+
+/* smooth anchor nav highlight */
+$$('nav.app-nav a').forEach(a=>a.addEventListener('click', e=>{
+  e.preventDefault();
+  const href = a.getAttribute('href');
+  const el = document.querySelector(href);
+  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}));
+
+/* scrollspy */
+const navLinks = $$('nav.app-nav a');
+window.addEventListener('scroll', () => {
+  let fromTop = window.scrollY + 120;
+  navLinks.forEach(link => {
+    const section = document.querySelector(link.getAttribute('href'));
+    if (!section) return;
+    if (section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
+      navLinks.forEach(l=>l.classList.remove('active'));
+      link.classList.add('active');
+    }
+  });
+});
+
+/* -------------------------
+   Magnetic cursor for CTA & primary buttons
+   ------------------------- */
+(function magnetic(){
+  const magneticEls = Array.from(document.querySelectorAll('.btn.primary, .float-cta'));
+  magneticEls.forEach(el=>{
+    el.style.position = 'relative';
+    el.addEventListener('mousemove', (e)=>{
+      const rect = el.getBoundingClientRect();
+      const px = (e.clientX - rect.left - rect.width/2)/10;
+      const py = (e.clientY - rect.top - rect.height/2)/10;
+      el.style.transform = `translate(${px}px, ${py}px) scale(1.02)`;
+    });
+    el.addEventListener('mouseleave', ()=> el.style.transform = '');
+  });
+})();
+
+/* -------------------------
+   Contact form handling (simulated + optional endpoint)
+   ------------------------- */
+const contactForm = $('#contactForm');
+const cfStatus = $('#cf-status');
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  cfStatus.textContent = '';
+  const name = $('#cf-name').value.trim();
+  const email = $('#cf-email').value.trim();
+  const need = $('#cf-need').value;
+  const message = $('#cf-message').value.trim();
+  if (!name || !email || !message) { cfStatus.textContent = 'Please complete all fields.'; return; }
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) { cfStatus.textContent = 'Please enter a valid email.'; return; }
+  cfStatus.textContent = 'Sending…';
+  try {
+    // If you want real sends: set your endpoint in formAction var
+    const formAction = contactForm.getAttribute('action') || '';
+    if (formAction) {
+      // Real endpoint expects JSON
+      const res = await fetch(formAction, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name,email,need,message})});
+      if (!res.ok) throw new Error('Network');
+    } else {
+      // simulate network
+      await new Promise(r=>setTimeout(r,900));
+    }
+    contactForm.reset();
+    cfStatus.textContent = '✅ Thanks — I will reply within 24 hours.';
+    trackEvent('contact_submit', {name, email, need});
+  } catch (err){
+    console.error(err);
+    cfStatus.textContent = 'Submission failed. Try again or email chandramohanroman@gmail.com';
+  }
+});
+
+/* -------------------------
+   Event tracking helper (console + push to dataLayer stub)
+   ------------------------- */
+function trackEvent(name, data = {}){
+  console.log('TRACK:', name, data);
+  // Example: push to analytics dataLayer
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({event: name, ...data, ts: Date.now()});
+}
+
+/* -------------------------
+   Accessibility helpers & keyboard open project
+   ------------------------- */
+$$('.project').forEach(card => {
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const id = card.dataset.id;
+      openProject(id);
+    }
+  });
+});
+
+/* -------------------------
+   Small helper functions
+   ------------------------- */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* -------------------------
+   Track clicks on important CTA elements
+   ------------------------- */
+$$('.btn, .viewBtn, .project .thumb').forEach(el => {
+  el.addEventListener('click', () => trackEvent('click', {label: el.textContent?.trim()?.slice(0,40)}));
+});
+
+/* -------------------------
+   Ensure images without src are loaded fallback
+   ------------------------- */
+window.addEventListener('load', () => {
+  $$('img[loading="lazy"]').forEach(img=>{
+    if (!img.src && img.dataset.src) img.src = img.dataset.src;
+  });
+});
+</script>
 </body>
-    </html>
+</html>
